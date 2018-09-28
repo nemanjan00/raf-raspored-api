@@ -6,5 +6,8 @@
   "repository": "git@github.com:nemanjan00/raf-raspored-api.git",
   "author": "nemanjan00 <nemanjan00@gmail.com>",
   "license": "MIT",
-  "private": false
+  "private": false,
+  "dependencies": {
+    "request": "^2.88.0"
+  }
 }
