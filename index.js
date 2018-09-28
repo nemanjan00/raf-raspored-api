@@ -15,6 +15,7 @@ const translationTable = {
 };
 
 const scraper = {
+	// Get content of parsed table
 	_getData: () => {
 		return new Promise((resolve, reject) => {
 			request('https://rfidis.raf.edu.rs/raspored/', (error, response, body) => {
@@ -60,12 +61,59 @@ const scraper = {
 				resolve(table);
 			});
 		});
+	},
+	getData: () => {
+		return new Promise((resolve, reject) => {
+			scraper._getData().then((table) => {
+				// transform header to english
+
+				table.thead = table.thead.map(field => translationTable[field] || field);
+
+				// transform subjects from array to object
+				table.tbody = table.tbody.map((subject) => {
+					let subjectObject = {};
+
+					subject.forEach((data, key) => {
+						subjectObject[table.thead[key]] = data;
+					});
+
+					return subjectObject;
+				});
+
+				let subjects = table.tbody;
+
+				// split groups
+				subjects = subjects.map((subject) => {
+					subject.groups = subject.groups.split(", ");
+
+					return subject;
+				});
+
+				// split and normalize time (milirary time, for easier manipulation)
+				subjects = subjects.map((subject) => {
+					subject.time = {
+						from: subject.time.split("-")[0].replaceAll(":", ""),
+						to: subject.time.split("-")[1].replaceAll(":", "")
+					}
+
+					if(subject.time.from < 100){
+						subject.time.from *= 100;
+					}
+
+					if(subject.time.to < 100){
+						subject.time.to *= 100;
+					}
+
+					return subject;
+				});
+
+				resolve(subjects);
+			}).catch(error => reject(error));
+		});
 	}
-}
+};
 
-scraper._getData().then((table) => {
-	// transform header to english
-
-	table.thead = table.thead.map(field => translationTable[field] || field);
+scraper.getData().then((subjects) => {
+	console.log(subjects);
 });
 
