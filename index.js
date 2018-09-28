@@ -4,6 +4,16 @@ String.prototype.replaceAll = function(target, replacement) {
 	return this.split(target).join(replacement);
 };
 
+const translationTable = {
+	"Predmet": "subject",
+	"Tip": "type",
+	"Nastavnik": "professor",
+	"Grupe": "groups", 
+	"Dan": "day",
+	"Termin": "time",
+	"Učionica": "classroom"
+};
+
 const scraper = {
 	_getData: () => {
 		return new Promise((resolve, reject) => {
@@ -54,6 +64,8 @@ const scraper = {
 }
 
 scraper._getData().then((table) => {
-	console.log(table);
+	// transform header to english
+
+	table.thead = table.thead.map(field => translationTable[field] || field);
 });
 
