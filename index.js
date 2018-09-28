@@ -14,6 +14,14 @@ const translationTable = {
 	"Učionica": "classroom"
 };
 
+const dayTranslationTable = [
+	"PON",
+	"UTO",
+	"SRE",
+	"ČET",
+	"PET"
+]
+
 const scraper = {
 	// Get content of parsed table
 	_getData: () => {
@@ -62,6 +70,8 @@ const scraper = {
 			});
 		});
 	},
+
+	// get data in better format
 	getData: () => {
 		return new Promise((resolve, reject) => {
 			scraper._getData().then((table) => {
@@ -103,6 +113,13 @@ const scraper = {
 					if(subject.time.to < 100){
 						subject.time.to *= 100;
 					}
+
+					return subject;
+				});
+
+				// translate days
+				subjects = subjects.map((subject) => {
+					subject.day = dayTranslationTable.indexOf(subject.day) || -1;
 
 					return subject;
 				});
