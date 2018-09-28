@@ -20,7 +20,12 @@ const dayTranslationTable = [
 	"SRE",
 	"ČET",
 	"PET"
-]
+];
+
+const structure = [
+	"groups",
+	"subject"
+];
 
 const scraper = {
 	// Get content of parsed table
