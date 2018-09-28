@@ -132,10 +132,53 @@ const scraper = {
 				resolve(subjects);
 			}).catch(error => reject(error));
 		});
+	},
+
+	restructure: (subjects) => {
+		structure.forEach((data, key) => {
+			subjects = scraper._restructure(subjects, key, data);
+		});
+
+		return subjects;
+	},
+
+	// function for restructuring to tree
+	_restructure: (array, level, key) => {
+		if(level == 0){
+			let object = {};
+
+			array.forEach((value) => {
+				let group = value[key];
+
+				if(group instanceof Array){
+					group.forEach((group) => {
+						if(object[group] === undefined){
+							object[group] = [];
+						}
+
+						object[group].push(value);
+					});
+				} else {
+					if(object[group] === undefined){
+						object[group] = [];
+					}
+
+					object[group].push(value);
+				}
+			})
+
+			return object;
+		} else {
+			Object.keys(array).forEach((arrayKey) => {
+				array[arrayKey] = scraper._restructure(array[arrayKey], level - 1, key);
+			});
+
+			return array;
+		}
 	}
 };
 
 scraper.getData().then((subjects) => {
-	console.log(subjects);
+	console.log(scraper.restructure(subjects));
 });
 
