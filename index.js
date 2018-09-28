@@ -178,7 +178,5 @@ const scraper = {
 	}
 };
 
-scraper.getData().then((subjects) => {
-	console.log(scraper.restructure(subjects));
-});
+module.exports = scraper;
 
