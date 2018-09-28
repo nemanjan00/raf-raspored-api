@@ -1,7 +1,7 @@
 {
   "name": "raf-raspored-api",
   "version": "0.0.0",
-  "description": "Opis",
+  "description": "API za preuzimanje rasporeda sa sajta RAFa. ",
   "main": "index.js",
   "repository": "git@github.com:nemanjan00/raf-raspored-api.git",
   "author": "nemanjan00 <nemanjan00@gmail.com>",
