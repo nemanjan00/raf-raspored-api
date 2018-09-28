@@ -2,3 +2,7 @@
 
 /node_modules
 
+# Tern
+
+/.tern-port
+
